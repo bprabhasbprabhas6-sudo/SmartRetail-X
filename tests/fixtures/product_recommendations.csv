@@ -1,0 +1,6 @@
+product_x_id,product_y_id,product_y_name,similarity,co_purchase_count,recommendation_rank
+23131,10001,Test Product A,0.9,10,1
+23131,10002,Test Product B,0.8,8,2
+23131,10003,Test Product C,0.7,6,3
+23131,10004,Test Product D,0.6,5,4
+23131,10005,Test Product E,0.5,4,5

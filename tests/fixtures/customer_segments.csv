@@ -1,0 +1,2 @@
+customer_key,recency,frequency,monetary,r_score,f_score,m_score,rfm_score,segment,recommended_action
+1,10,12,77556.46,5,5,5,555,Champions,Reward and retain

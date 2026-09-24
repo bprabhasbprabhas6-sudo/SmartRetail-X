@@ -30,7 +30,7 @@ jobs:
           python -m pip install fastapi uvicorn pydantic python-dotenv
           python -m pip install sqlalchemy psycopg2-binary
           python -m pip install xgboost shap pyarrow
-          python -m pip install pytest pytest-asyncio httpx
+          python -m pip install pytest pytest-asyncio httpx2
           python -m pip install ruff mypy
 
       - name: Create test fixtures

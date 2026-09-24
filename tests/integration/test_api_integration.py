@@ -1,11 +1,62 @@
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from app.api.main import app
+from app.api.routes import (
+    anomalies,
+    customer_segment,
+    explainability,
+    forecast,
+    inventory,
+    recommendations,
+)
 
 client = TestClient(app)
 
 
-def test_smartretail_api_workflow():
+def test_smartretail_api_workflow(monkeypatch):
+    fixture_dir = (
+        Path(__file__).resolve().parents[1]
+        / "fixtures"
+    )
+
+    monkeypatch.setattr(
+        forecast,
+        "DATA_PATH",
+        fixture_dir / "forecasting_features.parquet",
+    )
+
+    monkeypatch.setattr(
+        inventory,
+        "INVENTORY_FILE",
+        fixture_dir / "inventory_recommendations.csv",
+    )
+
+    monkeypatch.setattr(
+        recommendations,
+        "RECOMMENDATION_FILE",
+        fixture_dir / "product_recommendations.csv",
+    )
+
+    monkeypatch.setattr(
+        customer_segment,
+        "SEGMENT_FILE",
+        fixture_dir / "customer_segments.csv",
+    )
+
+    monkeypatch.setattr(
+        anomalies,
+        "ANOMALY_FILE",
+        fixture_dir / "sales_anomalies.csv",
+    )
+
+    monkeypatch.setattr(
+        explainability,
+        "SHAP_FILE",
+        fixture_dir / "shap_feature_importance.csv",
+    )
+
     # 1. Check API health
     health_response = client.get("/health")
 

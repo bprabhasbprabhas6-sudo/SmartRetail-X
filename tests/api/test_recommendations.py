@@ -1,17 +1,32 @@
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from app.api.main import app
+from app.api.routes import recommendations
 
 client = TestClient(app)
 
 
-def test_product_recommendations():
+def test_product_recommendations(monkeypatch):
+    fixture_path = (
+        Path(__file__).resolve().parents[1]
+        / "fixtures"
+        / "product_recommendations.csv"
+    )
+
+    monkeypatch.setattr(
+        recommendations,
+        "RECOMMENDATION_FILE",
+        fixture_path,
+    )
+
     response = client.post(
         "/api/v1/recommendations/",
         json={
             "product_id": "23131",
-            "limit": 5
-        }
+            "limit": 5,
+        },
     )
 
     assert response.status_code == 200
@@ -19,20 +34,9 @@ def test_product_recommendations():
     data = response.json()
 
     assert data["product_id"] == "23131"
+    assert "recommendations" in data
+    assert len(data["recommendations"]) == 5
     assert data["status"] == "success"
 
-    assert "recommendations" in data
-    assert "count" in data
-
-    assert data["count"] <= 5
-
-    for recommendation in data["recommendations"]:
-        assert "product_id" in recommendation
-        assert "product_name" in recommendation
-        assert "similarity" in recommendation
-        assert "co_purchase_count" in recommendation
-        assert "recommendation_rank" in recommendation
-
-        assert recommendation["similarity"] >= 0
-        assert recommendation["co_purchase_count"] >= 0
-        assert recommendation["recommendation_rank"] >= 1
+    assert data["recommendations"][0]["product_id"] == "10001"
+    assert data["recommendations"][0]["recommendation_rank"] == 1

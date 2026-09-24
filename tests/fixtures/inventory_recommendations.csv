@@ -1,0 +1,2 @@
+product_id,average_daily_demand,demand_std,safety_stock,reorder_point,target_inventory,recommended_order_quantity,inventory_priority
+85123A,22.17,20.85,91.02,246.2,401.38,401.38,LOW

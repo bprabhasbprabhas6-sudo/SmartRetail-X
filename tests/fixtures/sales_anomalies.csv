@@ -1,0 +1,2 @@
+date,product_id,product_name,demand,revenue,rolling_mean,rolling_std,anomaly_score,anomaly_type,absolute_deviation
+2011-12-01,37410,Test Product,20,200.0,15.0,2.0,2.5,DEMAND_SPIKE,5.0

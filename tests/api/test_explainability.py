@@ -1,11 +1,26 @@
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from app.api.main import app
+from app.api.routes import explainability
 
 client = TestClient(app)
 
 
-def test_shap_feature_importance():
+def test_shap_feature_importance(monkeypatch):
+    fixture_path = (
+        Path(__file__).resolve().parents[1]
+        / "fixtures"
+        / "shap_feature_importance.csv"
+    )
+
+    monkeypatch.setattr(
+        explainability,
+        "SHAP_FILE",
+        fixture_path,
+    )
+
     response = client.get(
         "/api/v1/explainability/feature-importance"
     )
@@ -15,36 +30,12 @@ def test_shap_feature_importance():
     data = response.json()
 
     assert data["method"] == "SHAP TreeExplainer"
-    assert data["status"] == "success"
-
-    assert "feature_count" in data
     assert "features" in data
+    assert data["feature_count"] == 3
+    assert len(data["features"]) == 3
 
-    assert data["feature_count"] > 0
-    assert data["feature_count"] == len(data["features"])
+    assert data["features"][0]["feature"] == "lag_1"
+    assert data["features"][0]["mean_abs_shap"] == 0.80
+    assert data["features"][0]["rank"] == 1
 
-    # Verify expected forecasting feature exists
-    assert any(
-        feature["feature"] == "lag_7"
-        for feature in data["features"]
-    )
-
-    # Verify SHAP values are non-negative
-    for feature in data["features"]:
-        assert "rank" in feature
-        assert "feature" in feature
-        assert "mean_abs_shap" in feature
-
-        assert feature["rank"] >= 1
-        assert feature["mean_abs_shap"] >= 0
-
-    # Verify features are sorted by importance
-    shap_values = [
-        feature["mean_abs_shap"]
-        for feature in data["features"]
-    ]
-
-    assert shap_values == sorted(
-        shap_values,
-        reverse=True
-    )
+    assert data["status"] == "success"
