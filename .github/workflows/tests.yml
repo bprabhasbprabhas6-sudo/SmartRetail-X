@@ -25,13 +25,15 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install dependencies
-        run: |
-          python -m pip install pandas numpy scipy scikit-learn
-          python -m pip install fastapi uvicorn pydantic python-dotenv
-          python -m pip install sqlalchemy psycopg2-binary
-          python -m pip install xgboost shap pyarrow
-          python -m pip install pytest pytest-asyncio httpx2
-          python -m pip install ruff mypy
+  	run: |
+    	python -m pip install pandas numpy scipy scikit-learn
+    	python -m pip install fastapi uvicorn pydantic python-dotenv
+    	python -m pip install sqlalchemy psycopg2-binary
+    	python -m pip install xgboost shap pyarrow
+    	python -m pip install mlflow
+    	python -m pip install pytest pytest-asyncio httpx2
+    	python -m pip install ruff mypy
+
 
       - name: Create test fixtures
         run: python tests/fixtures/create_forecasting_fixture.py

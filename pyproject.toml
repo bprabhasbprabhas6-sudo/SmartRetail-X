@@ -1,3 +1,27 @@
+[project]
+name = "smartretail-x"
+version = "0.1.0"
+description = "Real-Time Retail Intelligence, Demand Forecasting & Inventory Optimization Platform"
+requires-python = ">=3.13"
+dependencies = [
+    "pandas",
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "python-dotenv",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "streamlit",
+    "plotly",
+    "xgboost",
+    "shap",
+    "pyarrow",
+    "mlflow>=3.16.1,<4.0.0",
+]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]

@@ -47,3 +47,7 @@ Thumbs.db
 
 # Generated test fixtures
 tests/fixtures/*.parquet
+
+# MLflow local tracking data
+mlflow.db
+mlruns/

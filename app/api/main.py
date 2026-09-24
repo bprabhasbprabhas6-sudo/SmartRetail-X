@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import FastAPI
 
@@ -33,7 +33,7 @@ def root():
     return {
         "project": "SmartRetail-X",
         "status": "running",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 
