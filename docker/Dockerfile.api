@@ -1,0 +1,38 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY pyproject.toml .
+
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir \
+       pandas \
+       numpy \
+       scipy \
+       scikit-learn \
+       fastapi \
+       uvicorn \
+       pydantic \
+       python-dotenv \
+       sqlalchemy \
+       psycopg2-binary \
+       xgboost \
+       shap \
+       pyarrow
+
+COPY app ./app
+COPY src ./src
+COPY models ./models
+COPY configs ./configs
+COPY data/processed/forecasting ./data/processed/forecasting
+COPY data/processed/inventory_recommendations.csv ./data/processed/inventory_recommendations.csv
+COPY data/processed/customer_segments.csv ./data/processed/customer_segments.csv
+COPY data/processed/product_recommendations.csv ./data/processed/product_recommendations.csv
+COPY data/processed/sales_anomalies.csv ./data/processed/sales_anomalies.csv
+
+EXPOSE 8001
+
+CMD ["uvicorn", "app.api.main:app", "--host", "0.0.0.0", "--port", "8001"]
