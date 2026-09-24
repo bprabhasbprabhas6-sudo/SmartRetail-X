@@ -1,11 +1,26 @@
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from app.api.main import app
+from app.api.routes import forecast
 
 client = TestClient(app)
 
 
-def test_forecast_api():
+def test_forecast_api(monkeypatch):
+    fixture_path = (
+        Path(__file__).resolve().parents[1]
+        / "fixtures"
+        / "forecasting_features.parquet"
+    )
+
+    monkeypatch.setattr(
+        forecast,
+        "DATA_PATH",
+        fixture_path,
+    )
+
     response = client.post(
         "/api/v1/forecast",
         json={

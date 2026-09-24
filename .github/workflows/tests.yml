@@ -33,6 +33,9 @@ jobs:
           python -m pip install pytest pytest-asyncio httpx
           python -m pip install ruff mypy
 
+      - name: Create test fixtures
+        run: python tests/fixtures/create_forecasting_fixture.py
+
       - name: Run Ruff
         run: ruff check app src tests
 
